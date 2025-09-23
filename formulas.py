@@ -46,11 +46,15 @@ CATEGORIES = {
         "Формула (16.10) - Смолистые вещества (P_см = ...)",
         "Формула (16.12) - Углеродная пыль (W_пыль = ...)",
     ],
-    "Выбросы (Кокс, ТКО)": [
-        "Формула (5.1) - Выбросы от кокса (E = ...)",  # Упрощённо, полный в PDF
-        "Формула (3.1) - Выбросы от ТКО (E = ...)",
-        "Формула (27) - Запас углерода в биомассе (CPij = Vij * KPij)",
-        "Формула 14.2 - CO2 от осушения (CO2 = A * EF * 44 / 12)",
+    "Выбросы (Сжигание топлива)": [
+        "Формула (1.1) - Выбросы CO2 от сжигания топлива (E_CO2 = sum(FC * EF * OF))",
+        "Формула (1.3) - Коэффициент выбросов CO2 (EFCO2 = sum(W * nC * rho * 10^-3))",
+        "Формула (1.4) - Коэффициент выбросов CO2 (EFCO2 = sum(W * nC * 44.011 * rho * 10^-3 / M))",
+        "Формула (1.5) - Коэффициент выбросов CO2 (EFCO2 = W * 3.664)",
+        "Формула (1.6) - Содержание углерода в коксе (W_C = (100 - A - V - S) / 100)",
+        "Формула (1.7) - Содержание углерода (W_C = EFCO2 / 3.664)",
+        "Формула (1.8) - Коэффициент окисления (OF = (100 - q4) / 100)",
+        "Формула (1.9) - Коэффициент окисления (OF = 1 - CC_A / CC_F)",
     ],
     # Другие группы добавим позже
 }
@@ -64,7 +68,7 @@ def calculate_formula(formula_name, inputs):
         e_i = float(inputs[0])
         gas = inputs[1]
         return e_i * GWP.get(gas, 1)
-    elif "Формула (1.9)" in formula_name:
+    elif "Формула (1.9)" in formula_name and "ЗПП" in formula_name:
         t_half = float(inputs[0])
         return math.log(2) / t_half
     elif "Формула (1)" in formula_name and "Суммарное" in formula_name:
@@ -91,18 +95,29 @@ def calculate_formula(formula_name, inputs):
         f_j = float(inputs[2])
         ef_j = EF_CARBONATES_6_1.get(carb, 0.440)
         return (m_j * ef_j * f_j) / 1000
-    elif "Формула (5.1)" in formula_name:
-        # Упрощённо; полный в PDF
-        param1 = float(inputs[0])
-        return param1 * 0.5  # Пример, доработай
-    elif "Формула (3.1)" in formula_name:
-        # Упрощённо
-        param1 = float(inputs[0])
-        return param1 * 1.5
-    elif "Формула (27)" in formula_name:
-        vij, kpij = map(float, inputs)
-        return vij * kpij
-    elif "Формула 14.2" in formula_name:
-        a, ef = map(float, inputs)
-        return a * ef * 44 / 12
+    elif "Формула (1.1)" in formula_name:
+        # Упрощённо для одного j; для sum - inputs as list
+        fc, ef, of = map(float, inputs)
+        return fc * ef * of
+    elif "Формула (1.3)" in formula_name:
+        w, nc, rho = map(float, inputs)
+        return w * nc * rho * 10**-3
+    elif "Формула (1.4)" in formula_name:
+        w, nc, m = map(float, inputs)
+        return w * nc * 44.011 * rho * 10**-3 / m
+    elif "Формула (1.5)" in formula_name:
+        w = float(inputs[0])
+        return w * 3.664
+    elif "Формула (1.6)" in formula_name:
+        a, v, s = map(float, inputs)
+        return (100 - a - v - s) / 100
+    elif "Формула (1.7)" in formula_name:
+        ef = float(inputs[0])
+        return ef / 3.664
+    elif "Формула (1.8)" in formula_name:
+        q4 = float(inputs[0])
+        return (100 - q4) / 100
+    elif "Формула (1.9)" in formula_name and "окисления" in formula_name:
+        cc_a, cc_f = map(float, inputs)
+        return 1 - cc_a / cc_f
     return 0.0

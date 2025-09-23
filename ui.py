@@ -169,6 +169,33 @@ class GHGCalculator:
         elif "Формула 14.2" in formula:
             self.input_widgets.append(self.create_entry("A:"))
             self.input_widgets.append(self.create_entry("EF:"))
+        elif "Формула (1.1)" in formula:
+            self.input_widgets.append(self.create_entry("FC (расход топлива):"))
+            self.input_widgets.append(self.create_entry("EF (коэффициент выбросов):"))
+            self.input_widgets.append(self.create_entry("OF (коэффициент окисления):"))
+        elif "Формула (1.3)" in formula:
+            self.input_widgets.append(self.create_entry("W (доля компонента):"))
+            self.input_widgets.append(self.create_entry("nC (атомы углерода):"))
+            self.input_widgets.append(self.create_entry("rho (плотность):"))
+        elif "Формула (1.4)" in formula:
+            self.input_widgets.append(self.create_entry("W (доля компонента):"))
+            self.input_widgets.append(self.create_entry("nC (атомы углерода):"))
+            self.input_widgets.append(self.create_entry("M (молярная масса):"))
+        elif "Формула (1.5)" in formula:
+            self.input_widgets.append(self.create_entry("W (содержание углерода):"))
+        elif "Формула (1.6)" in formula:
+            self.input_widgets.append(self.create_entry("A (содержание золы):"))
+            self.input_widgets.append(self.create_entry("V (содержание летучих):"))
+            self.input_widgets.append(self.create_entry("S (содержание серы):"))
+        elif "Формула (1.7)" in formula:
+            self.input_widgets.append(
+                self.create_entry("EFCO2 (коэффициент выбросов):")
+            )
+        elif "Формула (1.8)" in formula:
+            self.input_widgets.append(self.create_entry("q4 (потери тепла):"))
+        elif "Формула (1.9)" in formula and "окисления" in formula:
+            self.input_widgets.append(self.create_entry("CC_A (углерод в золе):"))
+            self.input_widgets.append(self.create_entry("CC_F (углерод в топливе):"))
 
     def create_entry(self, label):
         ttk.Label(self.inputs_frame, text=label).pack()
