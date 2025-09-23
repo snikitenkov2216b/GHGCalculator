@@ -11,10 +11,17 @@ GWP = {
     "SF6": 23500,
 }
 
+# Таблицы EF из PDF (стр.5, коэффициенты выбросов)
+EF_EXAMPLE = {  # Примеры из PDF, расширим позже
+    "Топливо стационарное": 0.440,
+    "Карбонаты": 0.522,
+}
+
 CATEGORIES = {
     "Общие": [
         "Формула (1) - Расход ресурса (Mрасход = Mпост - Mотгр + Mзапас_нач - Mзапас_кон)",
         "Формула (2) - CO2-эквивалент (E_CO2e = sum(E_i * GWP_i))",
+        "Формула (1.9) - Постоянная реакции ЗПП (k = ln(2)/t1/2)",
     ],
     "Поглощения (Леса, земли)": [
         "Формула (1) - Суммарное изменение углерода (ΔC = ΔCбиомасса + ΔCмертвая + ΔCподстилка + ΔCпочва)",
@@ -36,6 +43,9 @@ def calculate_formula(formula_name, inputs):
         e_i = float(inputs[0])
         gas = inputs[1]
         return e_i * GWP.get(gas, 1)
+    elif "Формула (1.9)" in formula_name:
+        t_half = float(inputs[0])
+        return math.log(2) / t_half
     elif "Формула (1)" in formula_name and "Суммарное" in formula_name:
         dc_biom, dc_mert, dc_podst, dc_poch = map(float, inputs)
         return dc_biom + dc_mert + dc_podst + dc_poch

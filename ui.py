@@ -151,6 +151,8 @@ class GHGCalculator:
             self.input_widgets.append(self.create_entry("Fracditch:"))
             self.input_widgets.append(self.create_entry("EFland:"))
             self.input_widgets.append(self.create_entry("EFditch:"))
+        elif "Формула (1.9)" in formula:
+            self.input_widgets.append(self.create_entry("t1/2 (полураспад):"))
 
     def create_entry(self, label):
         ttk.Label(self.inputs_frame, text=label).pack()
