@@ -56,7 +56,12 @@ CATEGORIES = {
         "Формула (1.8) - Коэффициент окисления (OF = (100 - q4) / 100)",
         "Формула (1.9) - Коэффициент окисления (OF = 1 - CC_A / CC_F)",
     ],
-    # Другие группы добавим позже
+    "Выбросы (Кокс, ТКО)": [
+        "Формула (5.1) - Выбросы от кокса (E = FC * EF * OF)",
+        "Формула (3.1) - Выбросы от ТКО (E = M * EF * (1 - R))",
+        "Формула (27) - Запас углерода в биомассе (CPij = Vij * KPij)",
+        "Формула 14.2 - CO2 от осушения (CO2 = A * EF * 44 / 12)",
+    ],
 }
 
 
@@ -96,7 +101,6 @@ def calculate_formula(formula_name, inputs):
         ef_j = EF_CARBONATES_6_1.get(carb, 0.440)
         return (m_j * ef_j * f_j) / 1000
     elif "Формула (1.1)" in formula_name:
-        # Упрощённо для одного j; для sum - inputs as list
         fc, ef, of = map(float, inputs)
         return fc * ef * of
     elif "Формула (1.3)" in formula_name:
@@ -120,4 +124,16 @@ def calculate_formula(formula_name, inputs):
     elif "Формула (1.9)" in formula_name and "окисления" in formula_name:
         cc_a, cc_f = map(float, inputs)
         return 1 - cc_a / cc_f
+    elif "Формула (5.1)" in formula_name:
+        fc, ef, of = map(float, inputs)
+        return fc * ef * of
+    elif "Формула (3.1)" in formula_name:
+        m, ef, r = map(float, inputs)
+        return m * ef * (1 - r)
+    elif "Формула (27)" in formula_name:
+        vij, kpij = map(float, inputs)
+        return vij * kpij
+    elif "Формула 14.2" in formula_name:
+        a, ef = map(float, inputs)
+        return a * ef * 44 / 12
     return 0.0

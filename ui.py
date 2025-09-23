@@ -37,7 +37,7 @@ class GHGCalculator:
             font=("Arial", 12),
         )
         self.group_menu.pack(pady=5)
-        self.group_menu.config(width=60)  # Добавлено для полной видимости названий
+        self.group_menu.config(width=60)
         self.group_menu.bind("<<ComboboxSelected>>", self.update_formulas)
 
         ttk.Label(self.tab_main, text="Формула:").pack(pady=5)
@@ -46,7 +46,7 @@ class GHGCalculator:
             self.tab_main, textvariable=self.formula_var, font=("Arial", 12)
         )
         self.formula_menu.pack(pady=5)
-        self.formula_menu.config(width=60)  # Добавлено для полной видимости названий
+        self.formula_menu.config(width=60)
         self.formula_menu.bind("<<ComboboxSelected>>", self.load_fields)
 
         self.inputs_frame = ttk.Frame(self.tab_main)
@@ -126,6 +126,8 @@ class GHGCalculator:
         elif "Формула (2)" in formula and "CO2" in formula:
             self.input_widgets.append(self.create_entry("E_i (т):"))
             self.input_widgets.append(self.create_combobox("Газ:", list(GWP.keys())))
+        elif "Формула (1.9)" in formula and "ЗПП" in formula:
+            self.input_widgets.append(self.create_entry("t1/2 (полураспад):"))
         elif "Формула (1)" in formula and "Суммарное" in formula:
             self.input_widgets.append(self.create_entry("ΔCбиомасса:"))
             self.input_widgets.append(self.create_entry("ΔCмертвая:"))
@@ -151,24 +153,12 @@ class GHGCalculator:
             self.input_widgets.append(self.create_entry("Fracditch:"))
             self.input_widgets.append(self.create_entry("EFland:"))
             self.input_widgets.append(self.create_entry("EFditch:"))
-        elif "Формула (1.9)" in formula:
-            self.input_widgets.append(self.create_entry("t1/2 (полураспад):"))
         elif "Формула E_CO2" in formula:
             self.input_widgets.append(self.create_entry("M_j (масса карбоната):"))
             self.input_widgets.append(
                 self.create_combobox("Карбонат:", list(EF_CARBONATES_6_1.keys()))
             )
             self.input_widgets.append(self.create_entry("F_j (доля):"))
-        elif "Формула (5.1)" in formula:
-            self.input_widgets.append(self.create_entry("Param1:"))
-        elif "Формула (3.1)" in formula:
-            self.input_widgets.append(self.create_entry("Param1:"))
-        elif "Формула (27)" in formula:
-            self.input_widgets.append(self.create_entry("Vij:"))
-            self.input_widgets.append(self.create_entry("KPij:"))
-        elif "Формула 14.2" in formula:
-            self.input_widgets.append(self.create_entry("A:"))
-            self.input_widgets.append(self.create_entry("EF:"))
         elif "Формула (1.1)" in formula:
             self.input_widgets.append(self.create_entry("FC (расход топлива):"))
             self.input_widgets.append(self.create_entry("EF (коэффициент выбросов):"))
@@ -196,6 +186,20 @@ class GHGCalculator:
         elif "Формула (1.9)" in formula and "окисления" in formula:
             self.input_widgets.append(self.create_entry("CC_A (углерод в золе):"))
             self.input_widgets.append(self.create_entry("CC_F (углерод в топливе):"))
+        elif "Формула (5.1)" in formula:
+            self.input_widgets.append(self.create_entry("FC:"))
+            self.input_widgets.append(self.create_entry("EF:"))
+            self.input_widgets.append(self.create_entry("OF:"))
+        elif "Формула (3.1)" in formula:
+            self.input_widgets.append(self.create_entry("M:"))
+            self.input_widgets.append(self.create_entry("EF:"))
+            self.input_widgets.append(self.create_entry("R:"))
+        elif "Формула (27)" in formula:
+            self.input_widgets.append(self.create_entry("Vij:"))
+            self.input_widgets.append(self.create_entry("KPij:"))
+        elif "Формула 14.2" in formula:
+            self.input_widgets.append(self.create_entry("A:"))
+            self.input_widgets.append(self.create_entry("EF:"))
 
     def create_entry(self, label):
         ttk.Label(self.inputs_frame, text=label).pack()
