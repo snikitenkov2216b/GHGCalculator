@@ -159,7 +159,16 @@ class GHGCalculator:
                 self.create_combobox("Карбонат:", list(EF_CARBONATES_6_1.keys()))
             )
             self.input_widgets.append(self.create_entry("F_j (доля):"))
-        # Добавим для (16.10), (16.12) в следующих шагах
+        elif "Формула (5.1)" in formula:
+            self.input_widgets.append(self.create_entry("Param1:"))
+        elif "Формула (3.1)" in formula:
+            self.input_widgets.append(self.create_entry("Param1:"))
+        elif "Формула (27)" in formula:
+            self.input_widgets.append(self.create_entry("Vij:"))
+            self.input_widgets.append(self.create_entry("KPij:"))
+        elif "Формула 14.2" in formula:
+            self.input_widgets.append(self.create_entry("A:"))
+            self.input_widgets.append(self.create_entry("EF:"))
 
     def create_entry(self, label):
         ttk.Label(self.inputs_frame, text=label).pack()
