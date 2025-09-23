@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from ttkthemes import ThemedTk
-from formulas import CATEGORIES, GWP, calculate_formula
+from formulas import CATEGORIES, GWP, calculate_formula, EF_CARBONATES_6_1
 from custom import custom_calc, export_result, draw_graph
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -153,6 +153,13 @@ class GHGCalculator:
             self.input_widgets.append(self.create_entry("EFditch:"))
         elif "Формула (1.9)" in formula:
             self.input_widgets.append(self.create_entry("t1/2 (полураспад):"))
+        elif "Формула E_CO2" in formula:
+            self.input_widgets.append(self.create_entry("M_j (масса карбоната):"))
+            self.input_widgets.append(
+                self.create_combobox("Карбонат:", list(EF_CARBONATES_6_1.keys()))
+            )
+            self.input_widgets.append(self.create_entry("F_j (доля):"))
+        # Добавим для (16.10), (16.12) в следующих шагах
 
     def create_entry(self, label):
         ttk.Label(self.inputs_frame, text=label).pack()

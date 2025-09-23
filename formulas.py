@@ -11,10 +11,20 @@ GWP = {
     "SF6": 23500,
 }
 
-# Таблицы EF из PDF (стр.5, коэффициенты выбросов)
-EF_EXAMPLE = {  # Примеры из PDF, расширим позже
-    "Топливо стационарное": 0.440,
-    "Карбонаты": 0.522,
+EF_CARBONATES_6_1 = {
+    "CaCO3": 0.440,
+    "MgCO3": 0.522,
+    "CaMg(CO3)2": 0.477,
+    "FeCO3": 0.380,
+}
+
+EF_CARBONATES_8_1 = {
+    "Na2CO3": 0.415,
+    "NaHCO3": 0.524,
+    "BaCO3": 0.223,
+    "K2CO3": 0.318,
+    "Li2CO3": 0.596,
+    "SrCO3": 0.284,
 }
 
 CATEGORIES = {
@@ -30,6 +40,11 @@ CATEGORIES = {
         "Формула (7) - CO2 от осушенных почв (CO2_organic = Aосуш * EF * 44 / 12)",
         "Формула (8) - N2O от осушенных почв (N2O_organic = Aосуш * EFN_N2O * 44 / 28)",
         "Формула (9) - CH4 от осушенных почв (CH4_organic = Aосуш * (1 - Fracditch) * EFland + Aосуш * Fracditch * EFditch)",
+    ],
+    "Выбросы (Производство извести)": [
+        "Формула E_CO2 - Выбросы от карбонатов (E_CO2 = sum(M_j * EF_j * F_j) / 1000)",
+        "Формула (16.10) - Смолистые вещества (P_см = ...)",  # Упрощённо, полный в PDF
+        "Формула (16.12) - Углеродная пыль (W_пыль = ...)",  # Упрощённо
     ],
     # Другие группы добавим позже
 }
@@ -64,4 +79,11 @@ def calculate_formula(formula_name, inputs):
     elif "Формула (9)" in formula_name:
         a_osush, fracditch, efland, efditch = map(float, inputs)
         return a_osush * (1 - fracditch) * efland + a_osush * fracditch * efditch
+    elif "Формула E_CO2" in formula_name:
+        m_j = float(inputs[0])
+        carb = inputs[1]
+        f_j = float(inputs[2])
+        ef_j = EF_CARBONATES_6_1.get(carb, 0.440)
+        return (m_j * ef_j * f_j) / 1000
+    # Добавим расчёты для (16.10), (16.12) в следующих шагах
     return 0.0
