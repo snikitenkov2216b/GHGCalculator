@@ -37,6 +37,7 @@ class GHGCalculator:
             font=("Arial", 12),
         )
         self.group_menu.pack(pady=5)
+        self.group_menu.config(width=60)  # Добавлено для полной видимости названий
         self.group_menu.bind("<<ComboboxSelected>>", self.update_formulas)
 
         ttk.Label(self.tab_main, text="Формула:").pack(pady=5)
@@ -45,6 +46,7 @@ class GHGCalculator:
             self.tab_main, textvariable=self.formula_var, font=("Arial", 12)
         )
         self.formula_menu.pack(pady=5)
+        self.formula_menu.config(width=60)  # Добавлено для полной видимости названий
         self.formula_menu.bind("<<ComboboxSelected>>", self.load_fields)
 
         self.inputs_frame = ttk.Frame(self.tab_main)
