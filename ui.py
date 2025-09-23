@@ -116,14 +116,39 @@ class GHGCalculator:
             widget.destroy()
         self.input_widgets = []
         formula = self.formula_var.get()
-        if "Формула (1)" in formula:
+        if "Формула (1)" in formula and "Расход" in formula:
             self.input_widgets.append(self.create_entry("Mпост (т или тыс. м³):"))
             self.input_widgets.append(self.create_entry("Mотгр (т или тыс. м³):"))
             self.input_widgets.append(self.create_entry("Mзапас_нач (т или тыс. м³):"))
             self.input_widgets.append(self.create_entry("Mзапас_кон (т или тыс. м³):"))
-        elif "Формула (2)" in formula:
+        elif "Формула (2)" in formula and "CO2" in formula:
             self.input_widgets.append(self.create_entry("E_i (т):"))
             self.input_widgets.append(self.create_combobox("Газ:", list(GWP.keys())))
+        elif "Формула (1)" in formula and "Суммарное" in formula:
+            self.input_widgets.append(self.create_entry("ΔCбиомасса:"))
+            self.input_widgets.append(self.create_entry("ΔCмертвая:"))
+            self.input_widgets.append(self.create_entry("ΔCподстилка:"))
+            self.input_widgets.append(self.create_entry("ΔCпочва:"))
+        elif "Формула (2)" in formula and "биомассе" in formula:
+            self.input_widgets.append(self.create_entry("C_после:"))
+            self.input_widgets.append(self.create_entry("C_до:"))
+            self.input_widgets.append(self.create_entry("A (площадь):"))
+        elif "Формула (6)" in formula:
+            self.input_widgets.append(self.create_entry("A (площадь):"))
+            self.input_widgets.append(self.create_entry("MB (масса биомассы):"))
+            self.input_widgets.append(self.create_entry("Cf (коэффициент горения):"))
+            self.input_widgets.append(self.create_entry("Gef (коэффициент выбросов):"))
+        elif "Формула (7)" in formula:
+            self.input_widgets.append(self.create_entry("Aосуш:"))
+            self.input_widgets.append(self.create_entry("EF:"))
+        elif "Формула (8)" in formula:
+            self.input_widgets.append(self.create_entry("Aосуш:"))
+            self.input_widgets.append(self.create_entry("EFN_N2O:"))
+        elif "Формула (9)" in formula:
+            self.input_widgets.append(self.create_entry("Aосуш:"))
+            self.input_widgets.append(self.create_entry("Fracditch:"))
+            self.input_widgets.append(self.create_entry("EFland:"))
+            self.input_widgets.append(self.create_entry("EFditch:"))
 
     def create_entry(self, label):
         ttk.Label(self.inputs_frame, text=label).pack()
