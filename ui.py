@@ -82,7 +82,7 @@ class GHGCalculator:
         self.custom_formula = tk.Text(self.tab_custom, height=5, font=("Arial", 12))
         self.custom_formula.pack(pady=5)
 
-        ttk.Label(self.tab_custom, text="Переменные (key=value, по строках):").pack(
+        ttk.Label(self.tab_custom, text="Переменные (key=value, по строкам):").pack(
             pady=5
         )
         self.custom_vars = tk.Text(self.tab_custom, height=10, font=("Arial", 12))
@@ -125,9 +125,7 @@ class GHGCalculator:
         self.input_widgets = []
         formula = self.formula_var.get()
         description = FORMULA_DESCRIPTIONS.get(formula, "")
-        ttk.Label(self.inputs_frame, text=description, wraplength=800).pack(
-            pady=5
-        )  # Описание формулы
+        ttk.Label(self.inputs_frame, text=description, wraplength=800).pack(pady=5)
         if "Формула (1)" in formula and "Расход" in formula:
             self.input_widgets.append(self.create_entry("Mпост (т или тыс. м³):"))
             self.input_widgets.append(self.create_entry("Mотгр (т или тыс. м³):"))
@@ -234,6 +232,43 @@ class GHGCalculator:
             )
             self.input_widgets.append(
                 self.create_entry("EFN2O-N (коэффициент выброса N2O):")
+            )
+        elif "Формула (80)" in formula:
+            self.input_widgets.append(self.create_entry("Cfert:"))
+            self.input_widgets.append(self.create_entry("Clime:"))
+            self.input_widgets.append(self.create_entry("Cplant:"))
+            self.input_widgets.append(self.create_entry("Cresp:"))
+            self.input_widgets.append(self.create_entry("Cerosion:"))
+        elif "Формула (81)" in formula:
+            self.input_widgets.append(self.create_entry("C_org:"))
+            self.input_widgets.append(self.create_entry("i:"))
+            self.input_widgets.append(self.create_entry("C_min:"))
+            self.input_widgets.append(self.create_entry("j:"))
+        elif "Формула (82)" in formula:
+            self.input_widgets.append(self.create_entry("Lime:"))
+        elif "Формула (83)" in formula:
+            self.input_widgets.append(self.create_entry("Cab:"))
+            self.input_widgets.append(self.create_entry("Cun:"))
+        elif "Формула (84)" in formula:
+            self.input_widgets.append(self.create_entry("a:"))
+            self.input_widgets.append(self.create_entry("Yi:"))
+            self.input_widgets.append(self.create_entry("b:"))
+        elif "Формула (85)" in formula:
+            self.input_widgets.append(self.create_entry("A:"))
+            self.input_widgets.append(self.create_entry("EFerosion:"))
+        elif "Формула (10)" in formula:
+            self.input_widgets.append(self.create_entry("C_нач:"))
+            self.input_widgets.append(self.create_entry("C_кон:"))
+            self.input_widgets.append(self.create_entry("A_торф:"))
+        elif "Формула (118)" in formula:
+            self.input_widgets.append(self.create_entry("A_торф:"))
+            self.input_widgets.append(self.create_entry("EF_CH4:"))
+        elif "Формула (135)" in formula:
+            self.input_widgets.append(self.create_entry("A_перевод:"))
+            self.input_widgets.append(self.create_entry("EF_N2O:"))
+        elif "Формула (143)" in formula:
+            self.input_widgets.append(
+                self.create_entry("ΔC_i (через пробел, напр. 1 2 3):")
             )
 
     def create_entry(self, label):
