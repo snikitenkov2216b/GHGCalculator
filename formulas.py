@@ -55,176 +55,176 @@ FORMULA_DESCRIPTIONS = {
 }
 
 CATEGORIES = {
-    "Общие": [
-        "Формула (1) - Расход ресурса",
-        "Формула (2) - CO2-эквивалент",
-        "Формула (1.9) - Постоянная реакции ЗПП",
-    ],
+    "Общие": ["Формула (1)", "Формула (2)", "Формула (1.9)"],
     "Поглощения (Леса, земли)": [
-        "Формула (1) - Суммарное изменение углерода",
-        "Формула (2) - Изменение в биомассе",
-        "Формула (6) - Выбросы от пожаров",
-        "Формула (7) - CO2 от осушенных почв",
-        "Формула (8) - N2O от осушенных почв",
-        "Формула (9) - CH4 от осушенных почв",
+        "Формула (1)",
+        "Формула (2)",
+        "Формула (6)",
+        "Формула (7)",
+        "Формула (8)",
+        "Формула (9)",
     ],
     "Выбросы (Производство извести)": [
-        "Формула E_CO2 - Выбросы от карбонатов",
-        "Формула (16.10) - Смолистые вещества",
-        "Формула (16.12) - Углеродная пыль",
+        "Формула E_CO2",
+        "Формула (16.10)",
+        "Формула (16.12)",
     ],
     "Выбросы (Сжигание топлива)": [
-        "Формула (1.1) - Выбросы CO2 от сжигания топлива",
-        "Формула (1.3) - Коэффициент выбросов CO2",
-        "Формула (1.4) - Коэффициент выбросов CO2",
-        "Формула (1.5) - Коэффициент выбросов CO2",
-        "Формула (1.6) - Содержание углерода в коксе",
-        "Формула (1.7) - Содержание углерода",
-        "Формула (1.8) - Коэффициент окисления",
-        "Формула (1.9) - Коэффициент окисления",
+        "Формула (1.1)",
+        "Формула (1.3)",
+        "Формула (1.4)",
+        "Формула (1.5)",
+        "Формула (1.6)",
+        "Формула (1.7)",
+        "Формула (1.8)",
+        "Формула (1.9)",
     ],
     "Выбросы (Кокс, ТКО)": [
-        "Формула (5.1) - Выбросы от кокса",
-        "Формула (3.1) - Выбросы от ТКО",
-        "Формула (27) - Запас углерода в биомассе",
-        "Формула 14.2 - CO2 от осушения",
+        "Формула (5.1)",
+        "Формула (3.1)",
+        "Формула (27)",
+        "Формула 14.2",
     ],
     "Выбросы (Алюминий, Химия)": [
-        "Формула (16.10) - Смолистые вещества",
-        "Формула (16.12) - Углеродная пыль",
-        "Формула (16.15) - Углеродная пена",
-        "Формула (126) - N2O от обводнения",
+        "Формула (16.10)",
+        "Формула (16.12)",
+        "Формула (16.15)",
+        "Формула (126)",
     ],
     "Выбросы (Сельское хозяйство)": [
-        "Формула (80) - Изменение углерода в минеральных почвах",
-        "Формула (81) - Поступление углерода с удобрениями",
-        "Формула (82) - Поступление углерода с известкованием",
-        "Формула (83) - Поступление углерода с растительными остатками",
-        "Формула (84) - Расчёт Cab + Cun",
-        "Формула (85) - Потери от эрозии",
+        "Формула (80)",
+        "Формула (81)",
+        "Формула (82)",
+        "Формула (83)",
+        "Формула (84)",
+        "Формула (85)",
     ],
     "Поглощения (Торфяники и земли)": [
-        "Формула (10) - Изменение углерода в торфяниках",
-        "Формула (118) - CH4 от торфяников",
-        "Формула (135) - N2O от перевода земель",
-        "Формула (143) - Итоговое изменение углерода",
+        "Формула (10)",
+        "Формула (118)",
+        "Формула (135)",
+        "Формула (143)",
     ],
 }
 
 
 def calculate_formula(formula_name, inputs):
-    if "Формула (1) - Расход ресурса" in formula_name:
+    if "Формула (1)" in formula_name and "Расход" in FORMULA_DESCRIPTIONS[formula_name]:
         m_post, m_otgr, m_zap_nach, m_zap_kon = map(float, inputs)
         return m_post - m_otgr + m_zap_nach - m_zap_kon
-    elif "Формула (2) - CO2-эквивалент" in formula_name:
+    elif "Формула (2)" in formula_name and "CO2" in FORMULA_DESCRIPTIONS[formula_name]:
         e_i = float(inputs[0])
         gas = inputs[1]
         return e_i * GWP.get(gas, 1)
-    elif "Формула (1.9) - Постоянная реакции ЗПП" in formula_name:
+    elif "Формула (1.9)" in formula_name:
         t_half = float(inputs[0])
         return math.log(2) / t_half
-    elif "Формула (1) - Суммарное изменение углерода" in formula_name:
+    elif (
+        "Формула (1)" in formula_name
+        and "Суммарное" in FORMULA_DESCRIPTIONS[formula_name]
+    ):
         dc_biom, dc_mert, dc_podst, dc_poch = map(float, inputs)
         return dc_biom + dc_mert + dc_podst + dc_poch
-    elif "Формула (2) - Изменение в биомассе" in formula_name:
+    elif (
+        "Формула (2)" in formula_name
+        and "биомассе" in FORMULA_DESCRIPTIONS[formula_name]
+    ):
         c_posle, c_do, a = map(float, inputs)
         return (c_posle - c_do) * a
-    elif "Формула (6) - Выбросы от пожаров" in formula_name:
+    elif "Формула (6)" in formula_name:
         a, mb, cf, gef = map(float, inputs)
         return a * mb * cf * gef * 10**-3
-    elif "Формула (7) - CO2 от осушенных почв" in formula_name:
+    elif "Формула (7)" in formula_name:
         a_osush, ef = map(float, inputs)
         return a_osush * ef * 44 / 12
-    elif "Формула (8) - N2O от осушенных почв" in formula_name:
+    elif "Формула (8)" in formula_name:
         a_osush, efn_n2o = map(float, inputs)
         return a_osush * efn_n2o * 44 / 28
-    elif "Формула (9) - CH4 от осушенных почв" in formula_name:
+    elif "Формула (9)" in formula_name:
         a_osush, fracditch, efland, efditch = map(float, inputs)
         return a_osush * (1 - fracditch) * efland + a_osush * fracditch * efditch
-    elif "Формула E_CO2 - Выбросы от карбонатов" in formula_name:
+    elif "Формула E_CO2" in formula_name:
         m_j = float(inputs[0])
         carb = inputs[1]
         f_j = float(inputs[2])
         ef_j = EF_CARBONATES_6_1.get(carb, 0.440)
         return (m_j * ef_j * f_j) / 1000
-    elif "Формула (1.1) - Выбросы CO2 от сжигания топлива" in formula_name:
+    elif "Формула (1.1)" in formula_name:
         fc, ef, of = map(float, inputs)
         return fc * ef * of
-    elif "Формула (1.3) - Коэффициент выбросов CO2" in formula_name:
+    elif "Формула (1.3)" in formula_name:
         w, nc, rho = map(float, inputs)
         return w * nc * rho * 10**-3
-    elif "Формула (1.4) - Коэффициент выбросов CO2" in formula_name:
+    elif "Формула (1.4)" in formula_name:
         w, nc, m = map(float, inputs)
         return w * nc * 44.011 * rho * 10**-3 / m
-    elif "Формула (1.5) - Коэффициент выбросов CO2" in formula_name:
+    elif "Формула (1.5)" in formula_name:
         w = float(inputs[0])
         return w * 3.664
-    elif "Формула (1.6) - Содержание углерода в коксе" in formula_name:
+    elif "Формула (1.6)" in formula_name:
         a, v, s = map(float, inputs)
         return (100 - a - v - s) / 100
-    elif "Формула (1.7) - Содержание углерода" in formula_name:
+    elif "Формула (1.7)" in formula_name:
         ef = float(inputs[0])
         return ef / 3.664
-    elif "Формула (1.8) - Коэффициент окисления" in formula_name:
+    elif "Формула (1.8)" in formula_name:
         q4 = float(inputs[0])
         return (100 - q4) / 100
-    elif "Формула (1.9) - Коэффициент окисления" in formula_name:
+    elif "Формула (1.9)" in formula_name:
         cc_a, cc_f = map(float, inputs)
         return 1 - cc_a / cc_f
-    elif "Формула (5.1) - Выбросы от кокса" in formula_name:
+    elif "Формула (5.1)" in formula_name:
         fc, ef, of = map(float, inputs)
         return fc * ef * of
-    elif "Формула (3.1) - Выбросы от ТКО" in formula_name:
+    elif "Формула (3.1)" in formula_name:
         m, ef, r = map(float, inputs)
         return m * ef * (1 - r)
-    elif "Формула (27) - Запас углерода в биомассе" in formula_name:
+    elif "Формула (27)" in formula_name:
         vij, kpij = map(float, inputs)
         return vij * kpij
-    elif "Формула 14.2 - CO2 от осушения" in formula_name:
+    elif "Формула 14.2" in formula_name:
         a, ef = map(float, inputs)
         return a * ef * 44 / 12
-    elif "Формула (16.10) - Смолистые вещества" in formula_name:
+    elif "Формула (16.10)" in formula_name:
         d, h, q, c, rho, k, n = map(float, inputs)
         return 0.785 * (d**2) * h * q * c * rho * (1 - k) * n
-    elif "Формула (16.12) - Углеродная пыль" in formula_name:
+    elif "Формула (16.12)" in formula_name:
         p_pyl, w_c = map(float, inputs)
         return p_pyl * w_c
-    elif "Формула (16.15) - Углеродная пена" in formula_name:
+    elif "Формула (16.15)" in formula_name:
         p_pena, w_pena = map(float, inputs)
         return p_pena * w_pena / 1000
-    elif "Формула (126) - N2O от обводнения" in formula_name:
+    elif "Формула (126)" in formula_name:
         a_rewetted, efn2o_n = map(float, inputs)
         return (a_rewetted * efn2o_n * 44 / 28) / 1000
-    elif "Формула (80) - Изменение углерода в минеральных почвах" in formula_name:
+    elif "Формула (80)" in formula_name:
         cfert, clime, cplant, cresp, cerosion = map(float, inputs)
         return cfert + clime + cplant - cresp + cerosion
-    elif "Формула (81) - Поступление углерода с удобрениями" in formula_name:
+    elif "Формула (81)" in formula_name:
         c_org, i, c_min, j = map(float, inputs)
         return (c_org * i) + (c_min * j)
-    elif "Формула (82) - Поступление углерода с известкованием" in formula_name:
+    elif "Формула (82)" in formula_name:
         lime = float(inputs[0])
         return lime * 8.75 / 100
-    elif (
-        "Формула (83) - Поступление углерода с растительными остатками" in formula_name
-    ):
+    elif "Формула (83)" in formula_name:
         cab, cun = map(float, inputs)
         return cab + cun
-    elif "Формула (84) - Расчёт Cab + Cun" in formula_name:
+    elif "Формула (84)" in formula_name:
         a, yi, b = map(float, inputs)
         return (a * yi + b) * 0.5
-    elif "Формула (85) - Потери от эрозии" in formula_name:
+    elif "Формула (85)" in formula_name:
         a, ef_erosion = map(float, inputs)
         return a * ef_erosion
-    elif "Формула (10) - Изменение углерода в торфяниках" in formula_name:
+    elif "Формула (10)" in formula_name:
         c_nach, c_kon, a_torf = map(float, inputs)
         return (c_nach - c_kon) * a_torf
-    elif "Формула (118) - CH4 от торфяников" in formula_name:
+    elif "Формула (118)" in formula_name:
         a_torf, ef_ch4 = map(float, inputs)
         return a_torf * ef_ch4
-    elif "Формула (135) - N2O от перевода земель" in formula_name:
+    elif "Формула (135)" in formula_name:
         a_perevod, ef_n2o = map(float, inputs)
         return a_perevod * ef_n2o * 44 / 28
-    elif "Формула (143) - Итоговое изменение углерода" in formula_name:
+    elif "Формула (143)" in formula_name:
         dc_i = list(map(float, inputs))
         return sum(dc_i)
     return 0.0
