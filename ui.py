@@ -2,7 +2,6 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from ttkthemes import ThemedTk
-import sympy as sp  # Для custom_calc
 from formulas import (
     CATEGORIES,
     GWP,
@@ -12,7 +11,7 @@ from formulas import (
 )
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-import csv
+from custom import CustomCalculator  # Импорт класса для кастомных операций
 
 
 class GHGCalculator:
@@ -72,7 +71,7 @@ class GHGCalculator:
         self.export_button = ttk.Button(
             self.tab_main,
             text="Экспорт в CSV",
-            command=self.export_result,
+            command=self.custom_calc.export_result,  # Вызов через экземпляр
         )
         self.export_button.pack(pady=10)
 
@@ -92,7 +91,9 @@ class GHGCalculator:
         ttk.Button(
             self.tab_custom,
             text="Вычислить",
-            command=self.custom_calc,
+            command=lambda: self.custom_calc.calc(
+                self.custom_formula, self.custom_vars, self.custom_result
+            ),
         ).pack(pady=10)
 
         self.custom_result = ttk.Label(
@@ -109,6 +110,9 @@ class GHGCalculator:
         self.results = []
         self.input_widgets = []
         self.current_formula_number = None
+
+        # Экземпляр CustomCalculator
+        self.custom_calc = CustomCalculator(self.ax, self.canvas, self.results)
 
     def update_formulas(self, event):
         group = self.group_var.get()
@@ -148,47 +152,8 @@ class GHGCalculator:
             result = calculate_formula(self.current_formula_number, inputs)
             self.result_label.config(text=f"Результат: {result:.2f} т CO2-экв.")
             self.results.append(result)
-            self.draw_graph()
+            self.custom_calc.draw_graph()  # Вызов через экземпляр
         except ValueError as ve:
             messagebox.showerror("Ошибка ввода", str(ve))
         except Exception as e:
             messagebox.showerror("Ошибка расчёта", str(e))
-
-    def custom_calc(self):
-        try:
-            formula_text = self.custom_formula.get("1.0", "end").strip()
-            vars_text = self.custom_vars.get("1.0", "end").strip().split("\n")
-            sym_formula = sp.sympify(formula_text)
-            subs = {
-                sp.symbols(k.split("=")[0].strip()): float(k.split("=")[1].strip())
-                for k in vars_text
-                if "=" in k
-            }
-            result = float(sym_formula.subs(subs))
-            self.custom_result.config(text=f"Результат: {result:.2f}")
-            self.results.append(result)
-            self.draw_graph()
-        except Exception as e:
-            messagebox.showerror("Ошибка", str(e))
-
-    def draw_graph(self):
-        self.ax.clear()
-        self.ax.plot(self.results, marker="o")
-        self.ax.set_title("Результаты расчётов")
-        self.ax.set_xlabel("Расчёт #")
-        self.ax.set_ylabel("т CO2-экв.")
-        self.canvas.draw()
-
-    def export_result(self):
-        if not self.results:
-            messagebox.showinfo("Инфо", "Нет результатов для экспорта")
-            return
-        try:
-            with open("results.csv", "w", newline="", encoding="utf-8") as f:
-                writer = csv.writer(f)
-                writer.writerow(["Расчёт", "Значение (т CO2-экв.)"])
-                for i, res in enumerate(self.results, 1):
-                    writer.writerow([i, res])
-            messagebox.showinfo("Успех", "Экспортировано в results.csv")
-        except Exception as e:
-            messagebox.showerror("Ошибка экспорта", str(e))
