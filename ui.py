@@ -126,89 +126,89 @@ class GHGCalculator:
         formula = self.formula_var.get()
         description = FORMULA_DESCRIPTIONS.get(formula, "")
         ttk.Label(self.inputs_frame, text=description, wraplength=800).pack(pady=5)
-        if "Формула (1)" in formula and "Расход" in formula:
+        if "Расход ресурса" in formula:
             self.input_widgets.append(self.create_entry("Mпост (т или тыс. м³):"))
             self.input_widgets.append(self.create_entry("Mотгр (т или тыс. м³):"))
             self.input_widgets.append(self.create_entry("Mзапас_нач (т или тыс. м³):"))
             self.input_widgets.append(self.create_entry("Mзапас_кон (т или тыс. м³):"))
-        elif "Формула (2)" in formula and "CO2" in formula:
+        elif "CO2-эквивалент" in formula:
             self.input_widgets.append(self.create_entry("E_i (т):"))
             self.input_widgets.append(self.create_combobox("Газ:", list(GWP.keys())))
-        elif "Формула (1.9)" in formula and "ЗПП" in formula:
+        elif "Постоянная реакции ЗПП" in formula:
             self.input_widgets.append(self.create_entry("t1/2 (полураспад):"))
-        elif "Формула (1)" in formula and "Суммарное" in formula:
+        elif "Суммарное изменение углерода" in formula:
             self.input_widgets.append(self.create_entry("ΔCбиомасса:"))
             self.input_widgets.append(self.create_entry("ΔCмертвая:"))
             self.input_widgets.append(self.create_entry("ΔCподстилка:"))
             self.input_widgets.append(self.create_entry("ΔCпочва:"))
-        elif "Формула (2)" in formula and "биомассе" in formula:
+        elif "Изменение в биомассе" in formula:
             self.input_widgets.append(self.create_entry("C_после:"))
             self.input_widgets.append(self.create_entry("C_до:"))
             self.input_widgets.append(self.create_entry("A (площадь):"))
-        elif "Формула (6)" in formula:
+        elif "Выбросы от пожаров" in formula:
             self.input_widgets.append(self.create_entry("A (площадь):"))
             self.input_widgets.append(self.create_entry("MB (масса биомассы):"))
             self.input_widgets.append(self.create_entry("Cf (коэффициент горения):"))
             self.input_widgets.append(self.create_entry("Gef (коэффициент выбросов):"))
-        elif "Формула (7)" in formula:
+        elif "CO2 от осушенных почв" in formula:
             self.input_widgets.append(self.create_entry("Aосуш:"))
             self.input_widgets.append(self.create_entry("EF:"))
-        elif "Формула (8)" in formula:
+        elif "N2O от осушенных почв" in formula:
             self.input_widgets.append(self.create_entry("Aосуш:"))
             self.input_widgets.append(self.create_entry("EFN_N2O:"))
-        elif "Формула (9)" in formula:
+        elif "CH4 от осушенных почв" in formula:
             self.input_widgets.append(self.create_entry("Aосуш:"))
             self.input_widgets.append(self.create_entry("Fracditch:"))
             self.input_widgets.append(self.create_entry("EFland:"))
             self.input_widgets.append(self.create_entry("EFditch:"))
-        elif "Формула E_CO2" in formula:
+        elif "Выбросы от карбонатов" in formula:
             self.input_widgets.append(self.create_entry("M_j (масса карбоната):"))
             self.input_widgets.append(
                 self.create_combobox("Карбонат:", list(EF_CARBONATES_6_1.keys()))
             )
             self.input_widgets.append(self.create_entry("F_j (доля):"))
-        elif "Формула (1.1)" in formula:
+        elif "Выбросы CO2 от сжигания топлива" in formula:
             self.input_widgets.append(self.create_entry("FC (расход топлива):"))
             self.input_widgets.append(self.create_entry("EF (коэффициент выбросов):"))
             self.input_widgets.append(self.create_entry("OF (коэффициент окисления):"))
-        elif "Формула (1.3)" in formula:
+        elif "Коэффициент выбросов CO2 (1.3)" in formula:
             self.input_widgets.append(self.create_entry("W (доля компонента):"))
             self.input_widgets.append(self.create_entry("nC (атомы углерода):"))
             self.input_widgets.append(self.create_entry("rho (плотность):"))
-        elif "Формула (1.4)" in formula:
+        elif "Коэффициент выбросов CO2 (1.4)" in formula:
             self.input_widgets.append(self.create_entry("W (доля компонента):"))
             self.input_widgets.append(self.create_entry("nC (атомы углерода):"))
             self.input_widgets.append(self.create_entry("M (молярная масса):"))
-        elif "Формула (1.5)" in formula:
+        elif "Коэффициент выбросов CO2 (1.5)" in formula:
             self.input_widgets.append(self.create_entry("W (содержание углерода):"))
-        elif "Формула (1.6)" in formula:
+        elif "Содержание углерода в коксе" in formula:
             self.input_widgets.append(self.create_entry("A (содержание золы):"))
             self.input_widgets.append(self.create_entry("V (содержание летучих):"))
             self.input_widgets.append(self.create_entry("S (содержание серы):"))
-        elif "Формула (1.7)" in formula:
+        elif "Содержание углерода" in formula:
             self.input_widgets.append(
                 self.create_entry("EFCO2 (коэффициент выбросов):")
             )
-        elif "Формула (1.8)" in formula:
+        elif "Коэффициент окисления (1.8)" in formula:
             self.input_widgets.append(self.create_entry("q4 (потери тепла):"))
-        elif "Формула (1.9)" in formula and "окисления" in formula:
+        elif "Коэффициент окисления (1.9)" in formula:
             self.input_widgets.append(self.create_entry("CC_A (углерод в золе):"))
             self.input_widgets.append(self.create_entry("CC_F (углерод в топливе):"))
-        elif "Формула (5.1)" in formula:
+        elif "Выбросы от кокса" in formula:
             self.input_widgets.append(self.create_entry("FC:"))
             self.input_widgets.append(self.create_entry("EF:"))
             self.input_widgets.append(self.create_entry("OF:"))
-        elif "Формула (3.1)" in formula:
+        elif "Выбросы от ТКО" in formula:
             self.input_widgets.append(self.create_entry("M:"))
             self.input_widgets.append(self.create_entry("EF:"))
             self.input_widgets.append(self.create_entry("R:"))
-        elif "Формула (27)" in formula:
+        elif "Запас углерода в биомассе" in formula:
             self.input_widgets.append(self.create_entry("Vij:"))
             self.input_widgets.append(self.create_entry("KPij:"))
-        elif "Формула 14.2" in formula:
+        elif "CO2 от осушения" in formula:
             self.input_widgets.append(self.create_entry("A:"))
             self.input_widgets.append(self.create_entry("EF:"))
-        elif "Формула (16.10)" in formula:
+        elif "Смолистые вещества" in formula:
             self.input_widgets.append(self.create_entry("d (диаметр лунки, дм):"))
             self.input_widgets.append(self.create_entry("h (высота лунки, дм):"))
             self.input_widgets.append(self.create_entry("q (степень заполнения):"))
@@ -218,55 +218,55 @@ class GHGCalculator:
             )
             self.input_widgets.append(self.create_entry("k (выход кокса):"))
             self.input_widgets.append(self.create_entry("n (количество штырей):"))
-        elif "Формула (16.12)" in formula:
+        elif "Углеродная пыль" in formula:
             self.input_widgets.append(self.create_entry("P_пыль (поступление пыли):"))
             self.input_widgets.append(self.create_entry("W_C (содержание углерода):"))
-        elif "Формула (16.15)" in formula:
+        elif "Углеродная пена" in formula:
             self.input_widgets.append(self.create_entry("P_пена (выход пены):"))
             self.input_widgets.append(
                 self.create_entry("W_пена (содержание углерода в пене):")
             )
-        elif "Формула (126)" in formula:
+        elif "N2O от обводнения" in formula:
             self.input_widgets.append(
                 self.create_entry("Arewetted (площадь обводненных):")
             )
             self.input_widgets.append(
                 self.create_entry("EFN2O-N (коэффициент выброса N2O):")
             )
-        elif "Формула (80)" in formula:
+        elif "Изменение углерода в минеральных почвах" in formula:
             self.input_widgets.append(self.create_entry("Cfert:"))
             self.input_widgets.append(self.create_entry("Clime:"))
             self.input_widgets.append(self.create_entry("Cplant:"))
             self.input_widgets.append(self.create_entry("Cresp:"))
             self.input_widgets.append(self.create_entry("Cerosion:"))
-        elif "Формула (81)" in formula:
+        elif "Поступление углерода с удобрениями" in formula:
             self.input_widgets.append(self.create_entry("C_org:"))
             self.input_widgets.append(self.create_entry("i:"))
             self.input_widgets.append(self.create_entry("C_min:"))
             self.input_widgets.append(self.create_entry("j:"))
-        elif "Формула (82)" in formula:
+        elif "Поступление углерода с известкованием" in formula:
             self.input_widgets.append(self.create_entry("Lime:"))
-        elif "Формула (83)" in formula:
+        elif "Поступление углерода с растительными остатками" in formula:
             self.input_widgets.append(self.create_entry("Cab:"))
             self.input_widgets.append(self.create_entry("Cun:"))
-        elif "Формула (84)" in formula:
+        elif "Расчёт Cab + Cun" in formula:
             self.input_widgets.append(self.create_entry("a:"))
             self.input_widgets.append(self.create_entry("Yi:"))
             self.input_widgets.append(self.create_entry("b:"))
-        elif "Формула (85)" in formula:
+        elif "Потери от эрозии" in formula:
             self.input_widgets.append(self.create_entry("A:"))
             self.input_widgets.append(self.create_entry("EFerosion:"))
-        elif "Формула (10)" in formula:
+        elif "Изменение углерода в торфяниках" in formula:
             self.input_widgets.append(self.create_entry("C_нач:"))
             self.input_widgets.append(self.create_entry("C_кон:"))
             self.input_widgets.append(self.create_entry("A_торф:"))
-        elif "Формула (118)" in formula:
+        elif "CH4 от торфяников" in formula:
             self.input_widgets.append(self.create_entry("A_торф:"))
             self.input_widgets.append(self.create_entry("EF_CH4:"))
-        elif "Формула (135)" in formula:
+        elif "N2O от перевода земель" in formula:
             self.input_widgets.append(self.create_entry("A_перевод:"))
             self.input_widgets.append(self.create_entry("EF_N2O:"))
-        elif "Формула (143)" in formula:
+        elif "Итоговое изменение углерода" in formula:
             self.input_widgets.append(
                 self.create_entry("ΔC_i (через пробел, напр. 1 2 3):")
             )
