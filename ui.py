@@ -24,6 +24,15 @@ class GHGCalculator:
         style.configure("TLabel", font=("Arial", 12))
         style.configure("TButton", font=("Arial", 12), padding=10)
 
+        # График (инициализация рано, чтобы передать в CustomCalculator)
+        self.fig = plt.Figure(figsize=(5, 4))
+        self.ax = self.fig.add_subplot(111)
+        self.results = []
+        # Экземпляр CustomCalculator (теперь рано, чтобы использовать в command)
+        self.custom_calc = CustomCalculator(
+            self.ax, FigureCanvasTkAgg(self.fig, master=None), self.results
+        )  # canvas будет установлен позже
+
         self.tab_control = ttk.Notebook(root)
         self.tab_main = ttk.Frame(self.tab_control)
         self.tab_custom = ttk.Frame(self.tab_control)
@@ -32,6 +41,11 @@ class GHGCalculator:
         self.tab_control.add(self.tab_custom, text="Своя формула")
         self.tab_control.add(self.tab_graph, text="График результатов")
         self.tab_control.pack(expand=1, fill="both")
+
+        # Установка canvas после создания tab_graph
+        self.canvas = FigureCanvasTkAgg(self.fig, self.tab_graph)
+        self.canvas.get_tk_widget().pack(fill="both", expand=True)
+        self.custom_calc.canvas = self.canvas  # Обновляем canvas в CustomCalculator
 
         # Основная вкладка
         ttk.Label(self.tab_main, text="Группа формул:").pack(pady=5)
@@ -71,7 +85,7 @@ class GHGCalculator:
         self.export_button = ttk.Button(
             self.tab_main,
             text="Экспорт в CSV",
-            command=self.custom_calc.export_result,  # Вызов через экземпляр
+            command=self.custom_calc.export_result,
         )
         self.export_button.pack(pady=10)
 
@@ -101,18 +115,8 @@ class GHGCalculator:
         )
         self.custom_result.pack(pady=10)
 
-        # График
-        self.fig = plt.Figure(figsize=(5, 4))
-        self.ax = self.fig.add_subplot(111)
-        self.canvas = FigureCanvasTkAgg(self.fig, self.tab_graph)
-        self.canvas.get_tk_widget().pack(fill="both", expand=True)
-
-        self.results = []
         self.input_widgets = []
         self.current_formula_number = None
-
-        # Экземпляр CustomCalculator
-        self.custom_calc = CustomCalculator(self.ax, self.canvas, self.results)
 
     def update_formulas(self, event):
         group = self.group_var.get()
@@ -152,7 +156,7 @@ class GHGCalculator:
             result = calculate_formula(self.current_formula_number, inputs)
             self.result_label.config(text=f"Результат: {result:.2f} т CO2-экв.")
             self.results.append(result)
-            self.custom_calc.draw_graph()  # Вызов через экземпляр
+            self.custom_calc.draw_graph()
         except ValueError as ve:
             messagebox.showerror("Ошибка ввода", str(ve))
         except Exception as e:
