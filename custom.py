@@ -1,45 +1,52 @@
-# custom.py - Кастомные формулы, экспорт, графики
+# custom.py - Логика кастомных расчетов, экспорта и графиков
 import sympy as sp
-import csv
-from tkinter import messagebox, filedialog
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+import csv
+from tkinter import messagebox
 
 
-def custom_calc(custom_formula, custom_vars, custom_result, results, ax, canvas):
-    try:
-        formula_text = custom_formula.get("1.0", "end").strip()
-        vars_text = custom_vars.get("1.0", "end").strip()
-        symbols = {}
-        for line in vars_text.split("\n"):
-            if line:
-                k, v = line.split("=")
-                symbols[k.strip()] = float(v.strip())
-        expr = sp.sympify(formula_text)
-        result = float(expr.subs(symbols))
-        custom_result.config(text=f"Результат: {result:.2f} т CO2-экв.")
-        results.append(result)
-        draw_graph(ax, canvas, results)
-    except Exception as e:
-        messagebox.showerror("Ошибка", str(e))
+class CustomCalculator:
+    def __init__(self, ax, canvas, results):
+        self.ax = ax
+        self.canvas = canvas
+        self.results = results
 
+    def calc(self, custom_formula_widget, custom_vars_widget, custom_result_label):
+        try:
+            formula_text = custom_formula_widget.get("1.0", "end").strip()
+            vars_text = custom_vars_widget.get("1.0", "end").strip().split("\n")
+            sym_formula = sp.sympify(formula_text)
+            subs = {
+                sp.symbols(k.split("=")[0].strip()): float(k.split("=")[1].strip())
+                for k in vars_text
+                if "=" in k
+            }
+            result = float(sym_formula.subs(subs))
+            custom_result_label.config(text=f"Результат: {result:.2f}")
+            self.results.append(result)
+            self.draw_graph()
+        except Exception as e:
+            messagebox.showerror("Ошибка", str(e))
 
-def export_result(results, formula_var):
-    if not results:
-        messagebox.showwarning("Нет данных", "Рассчитайте сначала.")
-        return
-    file = filedialog.asksaveasfilename(defaultextension=".csv")
-    if file:
-        with open(file, "w", newline="") as f:
-            writer = csv.writer(f)
-            writer.writerow(["Формула", "Результат"])
-            writer.writerow([formula_var.get(), results[-1]])
+    def draw_graph(self):
+        self.ax.clear()
+        self.ax.plot(self.results, marker="o")
+        self.ax.set_title("Результаты расчётов")
+        self.ax.set_xlabel("Расчёт #")
+        self.ax.set_ylabel("т CO2-экв.")
+        self.canvas.draw()
 
-
-def draw_graph(ax, canvas, results):
-    ax.clear()
-    ax.bar(range(len(results)), results)
-    ax.set_title("Результаты расчётов")
-    ax.set_xlabel("Расчёт #")
-    ax.set_ylabel("Значение (т CO2-экв.)")
-    canvas.draw()
+    def export_result(self):
+        if not self.results:
+            messagebox.showinfo("Инфо", "Нет результатов для экспорта")
+            return
+        try:
+            with open("results.csv", "w", newline="", encoding="utf-8") as f:
+                writer = csv.writer(f)
+                writer.writerow(["Расчёт", "Значение (т CO2-экв.)"])
+                for i, res in enumerate(self.results, 1):
+                    writer.writerow([i, res])
+            messagebox.showinfo("Успех", "Экспортировано в results.csv")
+        except Exception as e:
+            messagebox.showerror("Ошибка экспорта", str(e))

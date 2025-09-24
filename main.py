@@ -1,4 +1,5 @@
 # main.py - Запуск приложения
+import tkinter as tk
 from ttkthemes import ThemedTk
 from ui import GHGCalculator
 
