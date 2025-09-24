@@ -2,7 +2,13 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from ttkthemes import ThemedTk
-from formulas import CATEGORIES, GWP, calculate_formula, EF_CARBONATES_6_1
+from formulas import (
+    CATEGORIES,
+    GWP,
+    calculate_formula,
+    EF_CARBONATES_6_1,
+    FORMULA_DESCRIPTIONS,
+)
 from custom import custom_calc, export_result, draw_graph
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -118,6 +124,10 @@ class GHGCalculator:
             widget.destroy()
         self.input_widgets = []
         formula = self.formula_var.get()
+        description = FORMULA_DESCRIPTIONS.get(formula, "")
+        ttk.Label(self.inputs_frame, text=description, wraplength=800).pack(
+            pady=5
+        )  # Описание формулы
         if "Формула (1)" in formula and "Расход" in formula:
             self.input_widgets.append(self.create_entry("Mпост (т или тыс. м³):"))
             self.input_widgets.append(self.create_entry("Mотгр (т или тыс. м³):"))
@@ -200,6 +210,31 @@ class GHGCalculator:
         elif "Формула 14.2" in formula:
             self.input_widgets.append(self.create_entry("A:"))
             self.input_widgets.append(self.create_entry("EF:"))
+        elif "Формула (16.10)" in formula:
+            self.input_widgets.append(self.create_entry("d (диаметр лунки, дм):"))
+            self.input_widgets.append(self.create_entry("h (высота лунки, дм):"))
+            self.input_widgets.append(self.create_entry("q (степень заполнения):"))
+            self.input_widgets.append(self.create_entry("c (содержание пека):"))
+            self.input_widgets.append(
+                self.create_entry("rho (плотность жидкой анодной массы):")
+            )
+            self.input_widgets.append(self.create_entry("k (выход кокса):"))
+            self.input_widgets.append(self.create_entry("n (количество штырей):"))
+        elif "Формула (16.12)" in formula:
+            self.input_widgets.append(self.create_entry("P_пыль (поступление пыли):"))
+            self.input_widgets.append(self.create_entry("W_C (содержание углерода):"))
+        elif "Формула (16.15)" in formula:
+            self.input_widgets.append(self.create_entry("P_пена (выход пены):"))
+            self.input_widgets.append(
+                self.create_entry("W_пена (содержание углерода в пене):")
+            )
+        elif "Формула (126)" in formula:
+            self.input_widgets.append(
+                self.create_entry("Arewetted (площадь обводненных):")
+            )
+            self.input_widgets.append(
+                self.create_entry("EFN2O-N (коэффициент выброса N2O):")
+            )
 
     def create_entry(self, label):
         ttk.Label(self.inputs_frame, text=label).pack()
