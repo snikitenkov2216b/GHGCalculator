@@ -1,4 +1,7 @@
 # main.py - Запуск приложения
+
+# Зависимости: pip install ttkthemes matplotlib pillow
+
 import tkinter as tk
 from ttkthemes import ThemedTk
 from ui import GHGCalculator
