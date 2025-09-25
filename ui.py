@@ -401,6 +401,18 @@ class GHGCalculator:
                     var_frame, text=input_data["description"], font=("Arial", 8)
                 )
                 desc_label.pack(pady=0)
+                if (
+                    input_data["var_latex"] == r"k_{j,y}"
+                    and v == "(1.2а)"
+                    and fuel in TABLE_1_1
+                ):
+                    entry.insert(0, str(TABLE_1_1[fuel]["k"]))
+                if (
+                    input_data["var_latex"] == r"NCV_{j,y}"
+                    and v == "(1.2б)"
+                    and fuel in TABLE_1_1
+                ):
+                    entry.insert(0, str(TABLE_1_1[fuel]["NCV"]))
                 if input_data["var_latex"] == r"NCV_{j,y}" and fuel in TABLE_1_1:
                     entry.insert(0, str(TABLE_1_1[fuel]["NCV"]))
                 if (

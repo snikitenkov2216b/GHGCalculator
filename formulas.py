@@ -57,6 +57,10 @@ def calculate_1_3(w_list, n_c_list, rho):
     Возвращает: EF_CO2,j,y в т CO2/тыс. м3
     """
     try:
+        if not isinstance(w_list, list):
+            w_list = [w_list]
+        if not isinstance(n_c_list, list):
+            n_c_list = [n_c_list]
         sum_wn = sum(w * n_c for w, n_c in zip(w_list, n_c_list))
         return sum_wn * rho * 0.01
     except (TypeError, ValueError) as e:
@@ -73,6 +77,12 @@ def calculate_1_4(w_list, n_c_list, m_list, rho):
     Возвращает: EF_CO2,j,y в т CO2/тыс. м3
     """
     try:
+        if not isinstance(w_list, list):
+            w_list = [w_list]
+        if not isinstance(n_c_list, list):
+            n_c_list = [n_c_list]
+        if not isinstance(m_list, list):
+            m_list = [m_list]
         sum_term = sum(
             w * n_c * 44.011 / m for w, n_c, m in zip(w_list, n_c_list, m_list)
         )
